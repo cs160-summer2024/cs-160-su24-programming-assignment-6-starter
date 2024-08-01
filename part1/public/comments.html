@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Comments</title>
+
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      .site-view {
+        width: 600px;
+        margin: 60px auto 0;
+
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      form {
+        margin-top: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        border-radius: 5px;
+      }
+
+      button {
+        display: block;
+        margin-top: 10px;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      li {
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="site-view">
+      <main>
+        <h2>Comments</h2>
+        <ul id="comments-list"></ul>
+
+        <form action="/api/add-comment" method="POST">
+          <label for="comment">Add a comment:</label>
+          <input type="text" id="comment" name="comment" />
+          <button type="submit">Submit</button>
+        </form>
+      </main>
+    </div>
+
+    <script>
+      const fetchAndRenderComments = () => {
+        fetch("/api/comments")
+          .then((response) => response.json())
+          .then((comments) => {
+            const commentsList = document.getElementById("comments-list");
+            commentsList.innerHTML = "";
+            comments.forEach((comment, i) => {
+              const commentItem = document.createElement("li");
+              const span = document.createElement("span");
+              span.textContent = comment;
+              const deleteButton = document.createElement("button");
+              deleteButton.textContent = "Delete";
+
+              deleteButton.addEventListener("click", () => {
+                console.log({ i });
+                // typical JSON request!
+                fetch("/api/delete-comment", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  // here, because we used the JSON content-type, the server's json middleware
+                  //   will parse commentIndex into request.body on the server.
+                  body: JSON.stringify({
+                    commentIndex: i,
+                  }),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    // It's possible to have the server respond and make changes based on that
+                    //   response, but here we'll just re-fetch from scratch.
+                    fetchAndRenderComments();
+                  });
+              });
+
+              commentItem.appendChild(span);
+              commentItem.appendChild(deleteButton);
+              commentsList.appendChild(commentItem);
+            });
+          });
+      };
+
+      fetchAndRenderComments();
+    </script>
+  </body>
+</html>

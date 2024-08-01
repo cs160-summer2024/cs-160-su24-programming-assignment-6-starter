@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 400px;
+        padding: 40px;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .color-buttons {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      .color-button {
+        padding: 10px;
+        font-size: 16px;
+        color: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #white-button {
+        color: black;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <h2>Counter: <span id="counter-value">loading...</span></h2>
+      <button id="increment-button">Increment</button>
+
+      <div class="color-buttons">
+        <button
+          class="color-button"
+          id="red-button"
+          style="background-color: red"
+        >
+          Red
+        </button>
+        <button
+          class="color-button"
+          id="green-button"
+          style="background-color: green"
+        >
+          Green
+        </button>
+        <button
+          class="color-button"
+          id="blue-button"
+          style="background-color: blue"
+        >
+          Blue
+        </button>
+        <button
+          class="color-button"
+          id="white-button"
+          style="background-color: white"
+        >
+          White
+        </button>
+      </div>
+    </main>
+
+    <script>
+      const counterValue = document.getElementById("counter-value");
+      const incrementButton = document.getElementById("increment-button");
+
+      // this is how you can set the background color of the page!
+      body.style.backgroundColor = "white";
+    </script>
+  </body>
+</html>
